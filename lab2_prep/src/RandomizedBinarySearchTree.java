@@ -1,21 +1,12 @@
-import java.util.*;
+import treeviewer.ViewableTree;
 
-public class RandomizedBinarySearchTree<Key extends Comparable<? super Key>, Val> extends AbstractST<Key, Val> implements Iterable<Key> {
+public class RandomizedBinarySearchTree<Key extends Comparable<? super Key>, Val> extends BinarySearchTree<Key, Val> implements Iterable<Key>, ViewableTree {
 
-    protected class Node {
-        Key key;
-        Val val;
-        Node left, right;
-
-        Node(Key key, Val val) {
-            this.key = key;
-            this.val = val;
-        }
+    public RandomizedBinarySearchTree() {
+        root = null;
     }
 
-    private Node root;
-
-    protected class RNode extends Node {
+    private class RNode<Key, Val> extends Node<Key, Val> {
         int W; // weight of the tree
 
         RNode(Key key, Val val) {
@@ -24,37 +15,32 @@ public class RandomizedBinarySearchTree<Key extends Comparable<? super Key>, Val
         }
     }
 
-    private Node rotR(Node h) {
-        Node x = h.left;
+    private Node<Key, Val> rotR(Node<Key, Val> h) {
+        Node<Key, Val> x = h.left;
         h.left = x.right;
         x.right = h;
         return x;
     }
 
-    private Node rotL(Node h) {
-        Node x = h.right;
+    private Node<Key, Val> rotL(Node<Key, Val> h) {
+        Node<Key, Val> x = h.right;
         h.right = x.left;
         x.left = h;
         return x;
     }
 
-    private void updateW(RNode x) {
+    private void updateW(RNode<Key, Val> x) {
         x.W = 1; // no recursive descent !
-        if (x.left != null) x.W += ((RNode) x.left).W;
-        if (x.right != null) x.W += ((RNode) x.right).W;
-    }
-
-    @Override
-    public boolean isEmpty() {
-        return false;
+        if (x.left != null) x.W += ((RNode<Key, Val>) x.left).W;
+        if (x.right != null) x.W += ((RNode<Key, Val>) x.right).W;
     }
 
     @Override
     public void put(Key key, Val val) {
-        root = putRBST(((RNode) root), key, val);
+        root = putRBST(((RNode<Key, Val>) root), key, val);
     }
 
-    private RNode putRBST(RNode x, Key key, Val val) {
+    private RNode<Key, Val> putRBST(RNode<Key, Val> x, Key key, Val val) {
         if (x == null) return new RNode(key, val);
         int cmp = key.compareTo(x.key);
         if (cmp == 0) {
@@ -66,39 +52,24 @@ public class RandomizedBinarySearchTree<Key extends Comparable<? super Key>, Val
             return putRoot(x, key, val);
         // ok -- lost : does not become the root
         if (cmp < 0)
-            x.left = putRBST(((RNode) x.left), key, val);
+            x.left = putRBST(((RNode<Key, Val>) x.left), key, val);
         else
-            x.right = putRBST(((RNode) x.right), key, val);
+            x.right = putRBST(((RNode<Key, Val>) x.right), key, val);
         updateW(x); // update the weights
         return x;
     }
 
-    private RNode putRoot(RNode x, Key key, Val val) {
+    private RNode<Key, Val> putRoot(RNode<Key, Val> x, Key key, Val val) {
         if (x == null) return new RNode(key, val);
         int cmp = key.compareTo(x.key);
         if (cmp == 0) x.val = val;
         else if (cmp < 0) {
-            x.left = putRoot(((RNode) x.left), key, val);
-            x = (RNode) rotR(x);
+            x.left = putRoot(((RNode<Key, Val>) x.left), key, val);
+            x = (RNode<Key, Val>) rotR(x);
         } else {
-            x.right = putRoot(((RNode) x.right), key, val);
-            x = (RNode) rotL(x);
+            x.right = putRoot(((RNode<Key, Val>) x.right), key, val);
+            x = (RNode<Key, Val>) rotL(x);
         }
         return x;
-    }
-
-    @Override
-    public Val get(Key key) {
-        return null;
-    }
-
-    @Override
-    public Iterator<Key> iterator() {
-        return null;
-    }
-
-    @Override
-    public void delete(Key key) {
-
     }
 }

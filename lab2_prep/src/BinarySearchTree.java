@@ -1,16 +1,13 @@
 import java.util.*;
-import java.util.Random;
-
-import treeviewer.BinaryTreeViewer;
 import treeviewer.ViewableNode;
 import treeviewer.ViewableTree;
 
 public class BinarySearchTree<Key extends Comparable<? super Key>, Val> extends AbstractST<Key, Val> implements Iterable<Key>, ViewableTree {
 
     protected class Node<Key, Val> implements ViewableNode {
-        private Key key;
-        private Val val;
-        private Node<Key, Val> left, right;
+        protected Key key;
+        protected Val val;
+        protected Node<Key, Val> left, right;
 
         public Node(Key key, Val val) {
             this.key = key;
@@ -33,15 +30,14 @@ public class BinarySearchTree<Key extends Comparable<? super Key>, Val> extends 
         }
     }
 
-    private Node<Key, Val> root;
+    protected Node<Key, Val> root;
 
     public BinarySearchTree() {
         root = null;
     }
 
     private class BSTIterator implements Iterator<Key> {
-        private Stack<Node>
-                stack = new Stack<>();
+        private Stack<Node> stack = new Stack<>();
 
         private void pushLeft(Node<Key, Val> x) {
             while (x != null) {
@@ -110,6 +106,7 @@ public class BinarySearchTree<Key extends Comparable<? super Key>, Val> extends 
 
     @Override
     public void delete(Key key) {
+        // Can be omitted
     }
 
     @Override
