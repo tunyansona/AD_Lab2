@@ -4,15 +4,14 @@ import java.util.Random;
 
 public class AD_Lab2Prep {
     public static void main(String[] args) {
-
-        BinarySearchTree<Integer, Integer> bst = new BinarySearchTree<Integer, Integer>();
+        BinarySearchTree<Integer, Integer> bst = new BinarySearchTree<>();
         displayDataBinaryTree(bst, "Binary Search Tree");
 
-        RandomizedBinarySearchTree<Integer, Integer> rbst = new RandomizedBinarySearchTree<Integer, Integer>();
+        RandomizedBinarySearchTree<Integer, Integer> rbst = new RandomizedBinarySearchTree<>();
         displayDataBinaryTree(rbst, "Randomized Binary Search Tree");
     }
 
-    public static void displayDataBinaryTree(BinarySearchTree<Integer, Integer> bst, String name) {
+    private static void displayDataBinaryTree(BinarySearchTree<Integer, Integer> bst, String name) {
         Random rnd = new Random(42);
         System.out.println("\n" + name);
         for (int i = 0; i < 10; i++) {

@@ -1,7 +1,6 @@
 import treeviewer.ViewableTree;
 
 public class RandomizedBinarySearchTree<Key extends Comparable<? super Key>, Val> extends BinarySearchTree<Key, Val> implements Iterable<Key>, ViewableTree {
-
     RandomizedBinarySearchTree() {
         root = null;
     }
@@ -41,7 +40,7 @@ public class RandomizedBinarySearchTree<Key extends Comparable<? super Key>, Val
     }
 
     private RNode<Key, Val> putRBST(RNode<Key, Val> x, Key key, Val val) {
-        if (x == null) return new RNode(key, val);
+        if (x == null) return new RNode<>(key, val);
         int cmp = key.compareTo(x.key);
         if (cmp == 0) {
             x.val = val;
@@ -60,7 +59,7 @@ public class RandomizedBinarySearchTree<Key extends Comparable<? super Key>, Val
     }
 
     private RNode<Key, Val> putRoot(RNode<Key, Val> x, Key key, Val val) {
-        if (x == null) return new RNode(key, val);
+        if (x == null) return new RNode<>(key, val);
         int cmp = key.compareTo(x.key);
         if (cmp == 0) x.val = val;
         else if (cmp < 0) {

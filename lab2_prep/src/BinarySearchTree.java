@@ -4,7 +4,6 @@ import treeviewer.ViewableNode;
 import treeviewer.ViewableTree;
 
 public class BinarySearchTree<Key extends Comparable<? super Key>, Val> extends AbstractST<Key, Val> implements Iterable<Key>, ViewableTree {
-
     protected static class Node<Key, Val> implements ViewableNode {
         Key key;
         Val val;
@@ -31,28 +30,8 @@ public class BinarySearchTree<Key extends Comparable<? super Key>, Val> extends 
         }
     }
 
-    Node<Key, Val> root;
-
-    BinarySearchTree() {
-        root = null;
-    }
-
-    private int getHeight(Node<Key, Val> x) {
-        return x == null || isLeaf(x)
-                ? 0
-                : Integer.max(getHeight(x.left), getHeight(x.right)) + 1;
-    }
-
-    private boolean isLeaf(Node<Key, Val> x) {
-        return x != null && x.left == null && x.right == null;
-    }
-
-    int getHeight() {
-        return getHeight(root);
-    }
-
     private class BSTIterator implements Iterator<Key> {
-        private Stack<Node> stack = new Stack<>();
+        private Stack<Node<Key, Val>> stack = new Stack<>();
 
         private void pushLeft(Node<Key, Val> x) {
             while (x != null) {
@@ -73,10 +52,16 @@ public class BinarySearchTree<Key extends Comparable<? super Key>, Val> extends 
         }
 
         public Key next() {
-            Node x = stack.pop();
+            Node<Key, Val> x = stack.pop();
             pushLeft(x.right);
-            return (Key) x.key;
+            return x.key;
         }
+    }
+
+    Node<Key, Val> root;
+
+    BinarySearchTree() {
+        root = null;
     }
 
     @Override
@@ -91,7 +76,7 @@ public class BinarySearchTree<Key extends Comparable<? super Key>, Val> extends 
 
     private Node<Key, Val> put(Node<Key, Val> x, Key key, Val val) {
         if (x == null)
-            return new Node(key, val);
+            return new Node<>(key, val);
         int cmp = x.key.compareTo(key);
         if (cmp == 0)
             x.val = val;
@@ -100,29 +85,6 @@ public class BinarySearchTree<Key extends Comparable<? super Key>, Val> extends 
         else
             x.right = put(x.right, key, val);
         return x;
-    }
-
-    private float getAverageDistance(Node<Key, Val> x) {
-        return x == null || isLeaf(x)
-                ? 0
-                : (weightedAverageDistance(x.left) + weightedAverageDistance(x.right)) / getWeight(x);
-    }
-
-    private float weightedAverageDistance(Node<Key, Val> x) {
-        return (getAverageDistance(x) + 1) * getWeight(x);
-    }
-
-    private int getWeight(Node<Key, Val> x) {
-        if (x == null) {
-            return 0;
-        }
-        return isLeaf(x)
-                ? 1
-                : getWeight(x.left) + getWeight(x.right) + 1;
-    }
-
-    float getAverageDistance() {
-        return (float) getAverageDistance(root);
     }
 
     @Override
@@ -150,5 +112,42 @@ public class BinarySearchTree<Key extends Comparable<? super Key>, Val> extends 
     @Override
     public ViewableNode root() {
         return root;
+    }
+
+    int getHeight() {
+        return getHeight(root);
+    }
+
+    private int getHeight(Node<Key, Val> x) {
+        return x == null || isLeaf(x)
+                ? 0
+                : Integer.max(getHeight(x.left), getHeight(x.right)) + 1;
+    }
+
+    private boolean isLeaf(Node<Key, Val> x) {
+        return x != null && x.left == null && x.right == null;
+    }
+
+    float getAverageDistance() {
+        return getAverageDistance(root);
+    }
+
+    private float getAverageDistance(Node<Key, Val> x) {
+        return x == null || isLeaf(x)
+                ? 0
+                : (weightedAverageDistance(x.left) + weightedAverageDistance(x.right)) / getWeight(x);
+    }
+
+    private float weightedAverageDistance(Node<Key, Val> x) {
+        return (getAverageDistance(x) + 1) * getWeight(x);
+    }
+
+    private int getWeight(Node<Key, Val> x) {
+        if (x == null) {
+            return 0;
+        }
+        return isLeaf(x)
+                ? 1
+                : getWeight(x.left) + getWeight(x.right) + 1;
     }
 }

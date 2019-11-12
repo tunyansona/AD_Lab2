@@ -1,5 +1,7 @@
+// Code provided by prof. H. Dierks
 import java.util.Iterator;
 
+@SuppressWarnings("ALL")
 public abstract class AbstractST<Key, Val> implements Iterable<Key> {
     // abstract methods
     abstract public boolean isEmpty();
