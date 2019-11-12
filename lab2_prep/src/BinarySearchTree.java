@@ -1,15 +1,16 @@
 import java.util.*;
+
 import treeviewer.ViewableNode;
 import treeviewer.ViewableTree;
 
 public class BinarySearchTree<Key extends Comparable<? super Key>, Val> extends AbstractST<Key, Val> implements Iterable<Key>, ViewableTree {
 
-    protected class Node<Key, Val> implements ViewableNode {
-        protected Key key;
-        protected Val val;
-        protected Node<Key, Val> left, right;
+    protected static class Node<Key, Val> implements ViewableNode {
+        Key key;
+        Val val;
+        Node<Key, Val> left, right;
 
-        public Node(Key key, Val val) {
+        Node(Key key, Val val) {
             this.key = key;
             this.val = val;
         }
@@ -30,10 +31,24 @@ public class BinarySearchTree<Key extends Comparable<? super Key>, Val> extends 
         }
     }
 
-    protected Node<Key, Val> root;
+    Node<Key, Val> root;
 
-    public BinarySearchTree() {
+    BinarySearchTree() {
         root = null;
+    }
+
+    private int getHeight(Node<Key, Val> x) {
+        return x == null || isLeaf(x)
+                ? 0
+                : Integer.max(getHeight(x.left), getHeight(x.right)) + 1;
+    }
+
+    boolean isLeaf(Node<Key, Val> x) {
+        return x != null && x.left == null && x.right == null;
+    }
+
+    int getHeight() {
+        return getHeight(root);
     }
 
     private class BSTIterator implements Iterator<Key> {
