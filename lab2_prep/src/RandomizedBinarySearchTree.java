@@ -2,11 +2,11 @@ import treeviewer.ViewableTree;
 
 public class RandomizedBinarySearchTree<Key extends Comparable<? super Key>, Val> extends BinarySearchTree<Key, Val> implements Iterable<Key>, ViewableTree {
 
-    public RandomizedBinarySearchTree() {
+    RandomizedBinarySearchTree() {
         root = null;
     }
 
-    private class RNode<Key, Val> extends Node<Key, Val> {
+    private static class RNode<Key, Val> extends Node<Key, Val> {
         int W; // weight of the tree
 
         RNode(Key key, Val val) {

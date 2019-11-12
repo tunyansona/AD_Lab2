@@ -10,15 +10,16 @@ public class AD_Lab2Prep {
         for (int i = 0; i < 10; i++) {
             int k = rnd.nextInt(100);
             bst.put(k, i);
-//            System.out.println("Put (" + k + ", " + i + ")");
+            System.out.println("Put (" + k + ", " + i + ")");
         }
         for (int i = 0; i < 100; i++) {
             Integer v = bst.get(i);
             if (v != null) {
-//                System.out.println("got k = " + i + " and value " + v);
+                System.out.println("got k = " + i + " and value " + v);
             }
         }
 
+        System.out.println(bst.getHeight());
         System.out.println(bst.getAverageDistance());
 
         BinaryTreeViewer btv1 = new BinaryTreeViewer();
@@ -32,15 +33,16 @@ public class AD_Lab2Prep {
         for (int i = 0; i < 10; i++) {
             int k = rnd.nextInt(100);
             rbst.put(k, i);
-//            System.out.println("Put (" + k + ", " + i + ")");
+            System.out.println("Put (" + k + ", " + i + ")");
         }
         for (int i = 0; i < 100; i++) {
             Integer v = rbst.get(i);
             if (v != null) {
-//                System.out.println("got k = " + i + " and value " + v);
+                System.out.println("got k = " + i + " and value " + v);
             }
         }
 
+        System.out.println(rbst.getHeight());
         System.out.println(rbst.getAverageDistance());
 
         BinaryTreeViewer btv2 = new BinaryTreeViewer();
