@@ -1,4 +1,5 @@
 import java.util.*;
+
 import treeviewer.ViewableNode;
 import treeviewer.ViewableTree;
 
@@ -85,6 +86,33 @@ public class BinarySearchTree<Key extends Comparable<? super Key>, Val> extends 
         else
             x.right = put(x.right, key, val);
         return x;
+    }
+
+    private float getAverageDistance(Node<Key, Val> x) {
+        return x == null || isLeaf(x)
+                ? 0
+                : (weightedAverageDistance(x.left) + weightedAverageDistance(x.right)) / getWeight(x);
+    }
+
+    private float weightedAverageDistance(Node<Key, Val> x) {
+        return (getAverageDistance(x) + 1) * getWeight(x);
+    }
+
+    private boolean isLeaf(Node<Key, Val> x) {
+        return x != null && x.left == null && x.right == null;
+    }
+
+    private int getWeight(Node<Key, Val> x) {
+        if (x == null) {
+            return 0;
+        }
+        return isLeaf(x)
+                ? 1
+                : getWeight(x.left) + getWeight(x.right) + 1;
+    }
+
+    float getAverageDistance() {
+        return (float) getAverageDistance(root);
     }
 
     @Override
