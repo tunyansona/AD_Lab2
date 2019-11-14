@@ -55,18 +55,7 @@ public class WeightWatchingBinarySearchTrees<Key extends Comparable<? super Key>
     @Override
     public void put(Key key, Val val) {
         root = putWWBST(((RNode<Key, Val>) root), key, val);
-
     }
-
-//    private boolean isParent(Node<Key, Val> x) {
-//        return x != null && (x.left != null || x.right != null);
-//    }
-//
-//    private RNode<Key, Val> comparedWeight(RNode<Key, Val> x, RNode<Key, Val> y){
-//        return x.W > y.W
-//                ? x
-//                : y;
-//    }
 
     private RNode<Key, Val> putWWBST(RNode<Key, Val> x, Key key, Val val) {
         if (x == null) return new RNode<>(key, val);
