@@ -1,3 +1,4 @@
+import treeviewer.ViewableNode;
 import treeviewer.ViewableTree;
 
 public class WeightWatchingBinarySearchTrees<Key extends Comparable<? super Key>, Val> extends RandomizedBinarySearchTree<Key, Val> implements Iterable<Key>, ViewableTree {
@@ -12,17 +13,34 @@ public class WeightWatchingBinarySearchTrees<Key extends Comparable<? super Key>
             super(key, val);
             W = 1;
         }
+
+        RNode<Key, Val> left, right;
+
+        @Override
+        public Object key() {
+            return key;
+        }
+
+        @Override
+        public ViewableNode left() {
+            return left;
+        }
+
+        @Override
+        public ViewableNode right() {
+            return right;
+        }
     }
 
-    private Node<Key, Val> rotR(Node<Key, Val> h) {
-        Node<Key, Val> x = h.left;
+    private RNode<Key, Val> rotR(RNode<Key, Val> h) {
+        RNode<Key, Val> x = h.left;
         h.left = x.right;
         x.right = h;
         return x;
     }
 
-    private Node<Key, Val> rotL(Node<Key, Val> h) {
-        Node<Key, Val> x = h.right;
+    private RNode<Key, Val> rotL(RNode<Key, Val> h) {
+        RNode<Key, Val> x = h.right;
         h.right = x.left;
         x.left = h;
         return x;
@@ -37,7 +55,18 @@ public class WeightWatchingBinarySearchTrees<Key extends Comparable<? super Key>
     @Override
     public void put(Key key, Val val) {
         root = putWWBST(((RNode<Key, Val>) root), key, val);
+
     }
+
+//    private boolean isParent(Node<Key, Val> x) {
+//        return x != null && (x.left != null || x.right != null);
+//    }
+//
+//    private RNode<Key, Val> comparedWeight(RNode<Key, Val> x, RNode<Key, Val> y){
+//        return x.W > y.W
+//                ? x
+//                : y;
+//    }
 
     private RNode<Key, Val> putWWBST(RNode<Key, Val> x, Key key, Val val) {
         if (x == null) return new RNode<>(key, val);
@@ -50,10 +79,21 @@ public class WeightWatchingBinarySearchTrees<Key extends Comparable<? super Key>
         if (Math.random() * ((x).W + 1) < 1)
             return putRoot(x, key, val);
         // ok -- lost : does not become the root
-        if (cmp < 0)
+        if (cmp < 0) {
             x.left = putWWBST(((RNode<Key, Val>) x.left), key, val);
-        else
+            if (x.right != null && x.left.left != null) {
+                if (x.left.left.W > x.right.W) {
+                    rotR(x.left);
+                }
+            }
+        } else {
             x.right = putWWBST(((RNode<Key, Val>) x.right), key, val);
+            if (x.left != null && x.right.right != null) {
+                if (x.right.right.W > x.left.W) {
+                    rotL(x.right);
+                }
+            }
+        }
         updateW(x); // update the weights
         return x;
     }
