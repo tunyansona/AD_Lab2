@@ -9,6 +9,9 @@ public class AD_Lab2Prep {
 
         RandomizedBinarySearchTree<Integer, Integer> rbst = new RandomizedBinarySearchTree<>();
         displayDataBinaryTree(rbst, "Randomized Binary Search Tree");
+
+        WeightWatchingBinarySearchTrees<Integer, Integer> wwbst = new WeightWatchingBinarySearchTrees<>();
+        displayDataBinaryTree(wwbst, "Weight Watching Binary Search Trees");
     }
 
     private static void displayDataBinaryTree(BinarySearchTree<Integer, Integer> bst, String name) {
