@@ -14,6 +14,21 @@ public class AD_Lab2Prep {
         displayDataBinaryTree(wwbst, "Weight Watching Binary Search Trees");
     }
 
+    private static void evaluatePerformancePutAndGet() {
+        final int N = 1000000; //choose smaller N for testing
+
+        // Implementation-Array
+        BinarySearchTree[] bsts = new BinarySearchTree[]{
+                new BinarySearchTree<>(),
+                new RandomizedBinarySearchTree<>(),
+                new WeightWatchingBinarySearchTrees<>()
+        };
+
+        for (BinarySearchTree bst : bsts) {
+            // to implement: shuffle
+        }
+    }
+
     private static void displayDataBinaryTree(BinarySearchTree<Integer, Integer> bst, String name) {
         Random rnd = new Random(42);
         System.out.println("\n" + name);
