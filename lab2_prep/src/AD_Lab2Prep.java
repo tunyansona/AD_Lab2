@@ -1,5 +1,6 @@
 import treeviewer.BinaryTreeViewer;
 
+import java.util.Arrays;
 import java.util.Random;
 
 public class AD_Lab2Prep {
@@ -12,10 +13,12 @@ public class AD_Lab2Prep {
 
         WeightWatchingBinarySearchTrees<Integer, Integer> wwbst = new WeightWatchingBinarySearchTrees<>();
         displayDataBinaryTree(wwbst, "Weight Watching Binary Search Trees");
+
+        evaluatePerformancePutAndGet();
     }
 
     private static void evaluatePerformancePutAndGet() {
-        final int N = 1000000; //choose smaller N for testing
+        final int N = 1; //choose smaller N for testing
 
         // Implementation-Array
         BinarySearchTree[] bsts = new BinarySearchTree[]{
@@ -25,8 +28,25 @@ public class AD_Lab2Prep {
         };
 
         for (BinarySearchTree bst : bsts) {
-            // to implement: shuffle
+            for (int K = 1; K <= 10; K++) {
+                int[] allNumbers = new int[10 * N];
+                for (int i = 0; i < 10 * N; i++) allNumbers[i] = i + 1;
+
+                shuffle(allNumbers);
+            }
         }
+    }
+
+    private static void shuffle(int[] array){
+        Random random = new Random();
+        for( int i = 0; i < array.length; i++){
+            int randomIndexToSwap = random.nextInt(array.length);
+            int temp =  array[randomIndexToSwap];
+            array[randomIndexToSwap] = array[i];
+            array[i] = temp;
+        }
+        //Test shuffle with small N:
+//        System.out.println(Arrays.toString(array));
     }
 
     private static void displayDataBinaryTree(BinarySearchTree<Integer, Integer> bst, String name) {
