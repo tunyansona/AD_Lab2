@@ -1,10 +1,14 @@
 import treeviewer.ViewableNode;
 import treeviewer.ViewableTree;
 
+import java.util.Random;
+
 public class WeightWatchingBinarySearchTrees<Key extends Comparable<? super Key>, Val> extends RandomizedBinarySearchTree<Key, Val> implements Iterable<Key>, ViewableTree {
     WeightWatchingBinarySearchTrees() {
         root = null;
     }
+
+    Random rnd = new Random(43); // TEST
 
     private static class RNode<Key, Val> extends Node<Key, Val> {
         int W; // weight of the tree
@@ -13,8 +17,6 @@ public class WeightWatchingBinarySearchTrees<Key extends Comparable<? super Key>
             super(key, val);
             W = 1;
         }
-
-        RNode<Key, Val> left, right;
 
         @Override
         public Object key() {
@@ -33,14 +35,14 @@ public class WeightWatchingBinarySearchTrees<Key extends Comparable<? super Key>
     }
 
     private RNode<Key, Val> rotR(RNode<Key, Val> h) {
-        RNode<Key, Val> x = h.left;
+        RNode<Key, Val> x = (RNode<Key, Val>) h.left;
         h.left = x.right;
         x.right = h;
         return x;
     }
 
     private RNode<Key, Val> rotL(RNode<Key, Val> h) {
-        RNode<Key, Val> x = h.right;
+        RNode<Key, Val> x = (RNode<Key, Val>) h.right;
         h.right = x.left;
         x.left = h;
         return x;
@@ -65,21 +67,22 @@ public class WeightWatchingBinarySearchTrees<Key extends Comparable<? super Key>
             return x;
         }
         // flip coin whether to put it as root
-        if (Math.random() * ((x).W + 1) < 1)
+//        if (Math.random() * ((x).W + 1) < 1)
+        if (rnd.nextDouble() * ((x).W + 1) < 1) //TEST
             return putRoot(x, key, val);
         // ok -- lost : does not become the root
         if (cmp < 0) {
             x.left = putWWBST(((RNode<Key, Val>) x.left), key, val);
             if (x.right != null && x.left.left != null) {
-                if (x.left.left.W > x.right.W) {
-                    rotR(x.left);
+                if (((RNode<Key, Val>)x.left.left).W > ((RNode<Key, Val>)x.right).W) {
+                    rotR((RNode<Key, Val>)x.left);
                 }
             }
         } else {
             x.right = putWWBST(((RNode<Key, Val>) x.right), key, val);
             if (x.left != null && x.right.right != null) {
-                if (x.right.right.W > x.left.W) {
-                    rotL(x.right);
+                if (((RNode<Key, Val> ) x.right.right).W > ((RNode<Key, Val>) x.left).W) {
+                    rotL((RNode<Key, Val>)x.right);
                 }
             }
         }
