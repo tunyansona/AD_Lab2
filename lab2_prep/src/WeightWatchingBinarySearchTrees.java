@@ -73,16 +73,26 @@ public class WeightWatchingBinarySearchTrees<Key extends Comparable<? super Key>
         // ok -- lost : does not become the root
         if (cmp < 0) {
             x.left = putWWBST(((RNode<Key, Val>) x.left), key, val);
-            if (x.right != null && x.left.left != null) {
-                if (((RNode<Key, Val>)x.left.left).W > ((RNode<Key, Val>)x.right).W) {
-                    rotR((RNode<Key, Val>)x.left);
+            if (x.left.left != null) {
+                if ((RNode<Key, Val>) x.right == null || ((RNode<Key, Val>) x.left.left).W > ((RNode<Key, Val>) x.right).W) {
+                    x = rotR((RNode<Key, Val>) x);
+                }
+            }
+            if (x.left.right != null) {
+                if ((RNode<Key, Val>) x.right == null || ((RNode<Key, Val>) x.left.right).W > ((RNode<Key, Val>) x.right).W) {
+                    x = rotR((RNode<Key, Val>) x);
                 }
             }
         } else {
             x.right = putWWBST(((RNode<Key, Val>) x.right), key, val);
-            if (x.left != null && x.right.right != null) {
-                if (((RNode<Key, Val> ) x.right.right).W > ((RNode<Key, Val>) x.left).W) {
-                    rotL((RNode<Key, Val>)x.right);
+            if (x.right.right != null) {
+                if ((RNode<Key, Val>) x.left == null || ((RNode<Key, Val>) x.right.right).W > ((RNode<Key, Val>) x.left).W) {
+                    x = rotL((RNode<Key, Val>) x);
+                }
+            }
+            if (x.right.left != null) {
+                if ((RNode<Key, Val>) x.left == null || ((RNode<Key, Val>) x.right).W > ((RNode<Key, Val>) x.left).W) {
+                    x = rotL((RNode<Key, Val>) x);
                 }
             }
         }
