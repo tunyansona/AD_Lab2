@@ -1,13 +1,9 @@
 import treeviewer.ViewableTree;
 
-import java.util.Random;
-
 public class RandomizedBinarySearchTree<Key extends Comparable<? super Key>, Val> extends BinarySearchTree<Key, Val> implements Iterable<Key>, ViewableTree {
     RandomizedBinarySearchTree() {
         root = null;
     }
-
-    Random rnd = new Random(43); // TEST
 
     private static class RNode<Key, Val> extends Node<Key, Val> {
         int W; // weight of the tree
@@ -33,7 +29,7 @@ public class RandomizedBinarySearchTree<Key extends Comparable<? super Key>, Val
     }
 
     private void updateW(RNode<Key, Val> x) {
-        x.W = 1; // no recursive descent !
+        x.W = 1;
         if (x.left != null) x.W += ((RNode<Key, Val>) x.left).W;
         if (x.right != null) x.W += ((RNode<Key, Val>) x.right).W;
     }
@@ -51,8 +47,7 @@ public class RandomizedBinarySearchTree<Key extends Comparable<? super Key>, Val
             return x;
         }
         // flip coin whether to put it as root
-//        if (Math.random() * ((x).W + 1) < 1)
-        if (rnd.nextDouble() * ((x).W + 1) < 1) //TEST
+        if (Math.random() * ((x).W + 1) < 1)
             return putRoot(x, key, val);
         // ok -- lost : does not become the root
         if (cmp < 0)

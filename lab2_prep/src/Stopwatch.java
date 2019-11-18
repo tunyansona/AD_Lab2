@@ -1,11 +1,11 @@
-public class Stopwatch {
+class Stopwatch {
     private static long start;
 
-    public static void tic() {
+    static void tic() {
         start = System.currentTimeMillis();
     }
 
-    public static double toc() {
+    static double toc() {
         long stop = System.currentTimeMillis();
         return (stop - start) / 1000.0;
     }

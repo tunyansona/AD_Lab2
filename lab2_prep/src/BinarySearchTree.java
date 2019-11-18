@@ -3,7 +3,10 @@ import java.util.*;
 import treeviewer.ViewableNode;
 import treeviewer.ViewableTree;
 
-public class BinarySearchTree<Key extends Comparable<? super Key>, Val> extends AbstractST<Key, Val> implements Iterable<Key>, ViewableTree {
+public class BinarySearchTree<Key extends Comparable<? super Key>, Val>
+        extends AbstractST<Key, Val>
+        implements Iterable<Key>, ViewableTree {
+
     protected static class Node<Key, Val> implements ViewableNode {
         Key key;
         Val val;

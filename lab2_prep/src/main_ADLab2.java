@@ -1,27 +1,51 @@
 import treeviewer.BinaryTreeViewer;
 
-import java.util.AbstractSequentialList;
 import java.util.Arrays;
 import java.util.Random;
 
-public class AD_Lab2Prep {
+public class main_ADLab2 {
     public static void main(String[] args) {
-//        BinarySearchTree<Integer, Integer> bst = new BinarySearchTree<>();
-//        displayDataBinaryTree(bst, "Binary Search Tree");
-//
-//        RandomizedBinarySearchTree<Integer, Integer> rbst = new RandomizedBinarySearchTree<>();
-//        displayDataBinaryTree(rbst, "Randomized Binary Search Tree");
-//
-//        WeightWatchingBinarySearchTrees<Integer, Integer> wwbst = new WeightWatchingBinarySearchTrees<>();
-//        displayDataBinaryTree(wwbst, "Weight Watching Binary Search Trees");
+        final int N = 1000; //choose smaller N for testing
 
-        evaluatePerformancePutAndGet();
+        displayBSTs(N); // Test with N = 1000 or smaller
+        evaluatePerformancePutAndGet(N);
     }
 
-    private static void evaluatePerformancePutAndGet() {
-        final int N = 100000; //choose smaller N for testing
-        Random rnd = new Random();
+    private static void displayBSTs(int N) {
+        BinarySearchTree<Integer, Integer> bst = new BinarySearchTree<>();
+        displayDataBinaryTree(bst, "Binary Search Tree", N);
 
+        RandomizedBinarySearchTree<Integer, Integer> rbst = new RandomizedBinarySearchTree<>();
+        displayDataBinaryTree(rbst, "Randomized Binary Search Tree", N);
+
+        WeightWatchingBinarySearchTrees<Integer, Integer> wwbst = new WeightWatchingBinarySearchTrees<>();
+        displayDataBinaryTree(wwbst, "Weight Watching Binary Search Trees", N);
+    }
+
+    private static void displayDataBinaryTree(BinarySearchTree<Integer, Integer> bst, String name, int N) {
+        Random rnd = new Random(42);
+        System.out.println("\n" + name);
+        for (int i = 0; i < N; i++) {
+            int k = rnd.nextInt(N);
+            bst.put(k, i);
+            // System.out.println("Put (" + k + ", " + i + ")");
+        }
+        for (int i = 0; i < N; i++) {
+            Integer v = bst.get(i);
+            if (v != null) {
+                // System.out.println("Node with key " + i + " has value " + v);
+            }
+        }
+
+        System.out.println("Tree height: " + bst.getHeight());
+        System.out.println("Average Distance: " + bst.getAverageDistance());
+
+        BinaryTreeViewer btv = new BinaryTreeViewer();
+        btv.setTree(bst);
+    }
+
+    private static void evaluatePerformancePutAndGet(int N) {
+        Random rnd = new Random();
 
         // Implementation-Array
         BinarySearchTree[] bsts = new BinarySearchTree[]{
@@ -31,12 +55,13 @@ public class AD_Lab2Prep {
         };
 
         for (BinarySearchTree bst : bsts) {
-            System.out.println("\n" + bst.toString());
             double[] averageDistance = new double[10];
             int[] height = new int[10];
             double[] getAverageTime = new double[10];
             double[] putAverageTime = new double[10];
             int keyProbability = 10;
+
+            System.out.println("\n" + bst.toString());
 
             for (int K = 1; K <= keyProbability; K++) {
                 bst.root = null;
@@ -81,6 +106,7 @@ public class AD_Lab2Prep {
                 putAverageTime[K - 1] = sw.toc();
             }
 
+            // Display to the console all results
             System.out.println("Average Distance: " + Arrays.toString(averageDistance));
             System.out.println("Average Height: " + Arrays.toString(height));
             System.out.println("Get time: " + Arrays.toString(getAverageTime));
@@ -96,29 +122,5 @@ public class AD_Lab2Prep {
             array[randomIndexToSwap] = array[i];
             array[i] = temp;
         }
-        //Test shuffle with small N:
-//        System.out.println(Arrays.toString(array));
-    }
-
-    private static void displayDataBinaryTree(BinarySearchTree<Integer, Integer> bst, String name) {
-        Random rnd = new Random(41);
-        System.out.println("\n" + name);
-        for (int i = 0; i < 100; i++) {
-            int k = rnd.nextInt(100);
-            bst.put(k, i);
-//            System.out.println("Put (" + k + ", " + i + ")");
-        }
-        for (int i = 0; i < 100; i++) {
-            Integer v = bst.get(i);
-            if (v != null) {
-//                System.out.println("Node with key " + i + " has value " + v);
-            }
-        }
-
-        System.out.println("Tree height: " + bst.getHeight());
-        System.out.println("Average Distance: " + bst.getAverageDistance());
-
-        BinaryTreeViewer btv = new BinaryTreeViewer();
-        btv.setTree(bst);
     }
 }

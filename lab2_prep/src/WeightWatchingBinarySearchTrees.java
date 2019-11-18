@@ -1,14 +1,10 @@
 import treeviewer.ViewableNode;
 import treeviewer.ViewableTree;
 
-import java.util.Random;
-
 public class WeightWatchingBinarySearchTrees<Key extends Comparable<? super Key>, Val> extends RandomizedBinarySearchTree<Key, Val> implements Iterable<Key>, ViewableTree {
     WeightWatchingBinarySearchTrees() {
         root = null;
     }
-
-    Random rnd = new Random(43); // TEST
 
     private static class RNode<Key, Val> extends Node<Key, Val> {
         int W; // weight of the tree
@@ -49,7 +45,7 @@ public class WeightWatchingBinarySearchTrees<Key extends Comparable<? super Key>
     }
 
     private void updateW(RNode<Key, Val> x) {
-        x.W = 1; // no recursive descent !
+        x.W = 1;
         if (x.left != null) x.W += ((RNode<Key, Val>) x.left).W;
         if (x.right != null) x.W += ((RNode<Key, Val>) x.right).W;
     }
@@ -67,32 +63,32 @@ public class WeightWatchingBinarySearchTrees<Key extends Comparable<? super Key>
             return x;
         }
         // flip coin whether to put it as root
-//        if (Math.random() * ((x).W + 1) < 1)
-        if (rnd.nextDouble() * ((x).W + 1) < 1) //TEST
+        if (Math.random() * ((x).W + 1) < 1) {
             return putRoot(x, key, val);
+        }
         // ok -- lost : does not become the root
         if (cmp < 0) {
             x.left = putWWBST(((RNode<Key, Val>) x.left), key, val);
             if (x.left.left != null) {
-                if ((RNode<Key, Val>) x.right == null || ((RNode<Key, Val>) x.left.left).W > ((RNode<Key, Val>) x.right).W) {
-                    x = rotR((RNode<Key, Val>) x);
+                if (x.right == null || ((RNode<Key, Val>) x.left.left).W > ((RNode<Key, Val>) x.right).W) {
+                    x = rotR(x);
                 }
             }
             if (x.left.right != null) {
-                if ((RNode<Key, Val>) x.right == null || ((RNode<Key, Val>) x.left.right).W > ((RNode<Key, Val>) x.right).W) {
-                    x = rotR((RNode<Key, Val>) x);
+                if (x.right == null || ((RNode<Key, Val>) x.left.right).W > ((RNode<Key, Val>) x.right).W) {
+                    x = rotR(x);
                 }
             }
         } else {
             x.right = putWWBST(((RNode<Key, Val>) x.right), key, val);
             if (x.right.right != null) {
-                if ((RNode<Key, Val>) x.left == null || ((RNode<Key, Val>) x.right.right).W > ((RNode<Key, Val>) x.left).W) {
-                    x = rotL((RNode<Key, Val>) x);
+                if (x.left == null || ((RNode<Key, Val>) x.right.right).W > ((RNode<Key, Val>) x.left).W) {
+                    x = rotL(x);
                 }
             }
             if (x.right.left != null) {
-                if ((RNode<Key, Val>) x.left == null || ((RNode<Key, Val>) x.right).W > ((RNode<Key, Val>) x.left).W) {
-                    x = rotL((RNode<Key, Val>) x);
+                if (x.left == null || ((RNode<Key, Val>) x.right).W > ((RNode<Key, Val>) x.left).W) {
+                    x = rotL(x);
                 }
             }
         }
@@ -106,10 +102,10 @@ public class WeightWatchingBinarySearchTrees<Key extends Comparable<? super Key>
         if (cmp == 0) x.val = val;
         else if (cmp < 0) {
             x.left = putRoot(((RNode<Key, Val>) x.left), key, val);
-            x = (RNode<Key, Val>) rotR(x);
+            x = rotR(x);
         } else {
             x.right = putRoot(((RNode<Key, Val>) x.right), key, val);
-            x = (RNode<Key, Val>) rotL(x);
+            x = rotL(x);
         }
         return x;
     }
