@@ -22,6 +22,7 @@ public class AD_Lab2Prep {
         final int N = 100000; //choose smaller N for testing
         Random rnd = new Random();
 
+
         // Implementation-Array
         BinarySearchTree[] bsts = new BinarySearchTree[]{
                 new BinarySearchTree<>(),
@@ -31,15 +32,18 @@ public class AD_Lab2Prep {
 
         for (BinarySearchTree bst : bsts) {
             System.out.println("\n" + bst.toString());
-            double averageDistance = 0;
-            int height =0;
-            double getAverageTime = 0;
-            double putAverageTime = 0;
+            double[] averageDistance = new double[10];
+            int[] height = new int[10];
+            double[] getAverageTime = new double[10];
+            double[] putAverageTime = new double[10];
             int keyProbability = 10;
 
             for (int K = 1; K <= keyProbability; K++) {
-                int[] allNumbers = new int[10 * N];
-                for (int i = 0; i < 10 * N; i++) allNumbers[i] = i + 1;
+                bst.root = null;
+                int[] allNumbers = new int[keyProbability * N];
+                for (int i = 0; i < keyProbability * N; i++) {
+                    allNumbers[i] = i + 1;
+                }
                 shuffle(allNumbers);
 
                 // 8a)
@@ -48,8 +52,8 @@ public class AD_Lab2Prep {
                 }
 
                 // 8b)
-                averageDistance += bst.getAverageDistance();
-                height += bst.getHeight();
+                averageDistance[K - 1] = bst.getAverageDistance();
+                height[K - 1] = bst.getHeight();
 
                 // 8c)
                 Stopwatch sw = new Stopwatch();
@@ -57,33 +61,31 @@ public class AD_Lab2Prep {
                 // Timer for get
                 Integer[] toGet = new Integer[N];
                 for (int i = 0; i < N; i++) {
-                    toGet[i] = rnd.nextInt(10 * N) + 1;
+                    toGet[i] = rnd.nextInt(keyProbability * N) + 1;
                 }
                 sw.tic();
                 for (int i = 0; i < N; i++) {
                     bst.get(toGet[i]);
                 }
-                getAverageTime += sw.toc();
+                getAverageTime[K - 1] = sw.toc();
 
                 // Timer for put
                 Integer[] toPut = new Integer[N];
                 for (int i = 0; i < N; i++) {
-                    toPut[i] = rnd.nextInt(10 * N) + 1;
+                    toPut[i] = rnd.nextInt(keyProbability * N) + 1;
                 }
                 sw.tic();
                 for (int i = 0; i < N; i++) {
                     bst.put(toPut[i], toPut[i]);
                 }
-                putAverageTime += sw.toc();
+                putAverageTime[K - 1] = sw.toc();
             }
 
-            System.out.println("Average Distance: " + averageDistance / keyProbability);
-            System.out.println("Average Height: " + height / keyProbability);
-            System.out.println("Get time: " + getAverageTime / keyProbability);
-            System.out.println("Put time: " + putAverageTime / keyProbability);
+            System.out.println("Average Distance: " + Arrays.toString(averageDistance));
+            System.out.println("Average Height: " + Arrays.toString(height));
+            System.out.println("Get time: " + Arrays.toString(getAverageTime));
+            System.out.println("Put time: " + Arrays.toString(putAverageTime));
         }
-
-
     }
 
     private static void shuffle(int[] array) {
@@ -99,17 +101,17 @@ public class AD_Lab2Prep {
     }
 
     private static void displayDataBinaryTree(BinarySearchTree<Integer, Integer> bst, String name) {
-        Random rnd = new Random(42);
+        Random rnd = new Random(41);
         System.out.println("\n" + name);
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 100; i++) {
             int k = rnd.nextInt(100);
             bst.put(k, i);
-            System.out.println("Put (" + k + ", " + i + ")");
+//            System.out.println("Put (" + k + ", " + i + ")");
         }
         for (int i = 0; i < 100; i++) {
             Integer v = bst.get(i);
             if (v != null) {
-                System.out.println("Node with key " + i + " has value " + v);
+//                System.out.println("Node with key " + i + " has value " + v);
             }
         }
 
