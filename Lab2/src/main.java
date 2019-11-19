@@ -3,7 +3,7 @@ import treeviewer.BinaryTreeViewer;
 import java.util.Arrays;
 import java.util.Random;
 
-public class main_ADLab2 {
+public class main {
     public static void main(String[] args) {
         final int N = 1000; //choose smaller N for testing
 
